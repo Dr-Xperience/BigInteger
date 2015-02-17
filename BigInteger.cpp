@@ -64,6 +64,9 @@ BigInt Integer(int x) {
     return Integer((ll) x);
 }
 
+
+
+
 void operator >> (istream &in, BigInt &a) {
     string s;
     getline(cin, s);
