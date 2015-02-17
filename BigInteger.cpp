@@ -32,6 +32,8 @@ void Print(BigInt a) {
     FORD(i,a.size()-2,0) printf("%09d", a[i]); EL;
 }
 
+
+
 BigInt Integer(string s) {
     BigInt ans;
     if (s[0] == '-') return ans;
@@ -72,6 +74,9 @@ void operator << (ostream &out, BigInt a) {
     Print(a);
 }
 
+
+
+
 bool operator < (BigInt a, BigInt b) {
     Set(a);
     Set(b);
@@ -97,6 +102,28 @@ bool operator >= (BigInt a, BigInt b) {
     return (b < a || b == a);
 }
 
+bool operator < (BigInt a, int b) {
+    return (a < Integer(b));
+}
+
+bool operator > (BigInt a, int b) {
+    return (a > Integer(b));
+}
+
+bool operator == (BigInt a, int b) {
+    return (a == Integer(b));
+}
+
+bool operator >= (BigInt a, int b) {
+    return (a >= Integer(b));
+}
+
+bool operator <= (BigInt a, int b) {
+    return (a <= Integer(b));
+}
+
+
+
 BigInt max(BigInt a, BigInt b) {
     if (a > b) return a;
     return b;
@@ -106,6 +133,9 @@ BigInt min(BigInt a, BigInt b) {
     if (a < b) return a;
     return b;
 }
+
+
+
 
 BigInt operator + (BigInt a, BigInt b) {
     Set(a);
@@ -140,6 +170,9 @@ void operator += (BigInt &a, int b) {
     a = a + b;
 }
 
+
+
+
 BigInt operator - (BigInt a, BigInt b) {
     Set(a);
     Set(b);
@@ -170,6 +203,9 @@ void operator -= (BigInt &a, int b) {
     a = a - b;
 }
 
+
+
+
 BigInt operator * (BigInt a, BigInt b) {
     Set(a);
     Set(b);
@@ -199,6 +235,8 @@ void operator *= (BigInt &a, int b) {
     a = a * b;
 }
 
+
+
 BigInt operator / (BigInt a, BigInt b) {
     Set(a);
     Set(b);
@@ -224,7 +262,16 @@ BigInt operator / (BigInt a, BigInt b) {
 }
 
 BigInt operator / (BigInt a, int b) {
-    return a / Integer(b);
+    Set(a);
+    BigInt ans;
+    ll cur = 0ll;
+    FORD(i,a.size()-1,0) {
+        cur = (cur*(ll)base + (ll)a[i]);
+        ans.insert(ans.begin(),cur/b);
+        cur %= b;
+    }
+    Set(ans);
+    return ans;
 }
 
 void operator /= (BigInt &a, BigInt b) {
@@ -234,6 +281,8 @@ void operator /= (BigInt &a, BigInt b) {
 void operator /= (BigInt &a, int b) {
     a = a / b;
 }
+
+
 
 BigInt operator % (BigInt a, BigInt b) {
     Set(a);
@@ -291,20 +340,16 @@ BigInt lcm(BigInt a, BigInt b) {
     return (a*b/gcd(a,b));
 }
 
+
 BigInt sqrt(BigInt a) {
-    Set(a);
-    BigInt L = Integer(1), R = a, ans;
-    while (L <= R) {
-        BigInt mid = (L+R)/2;
-        if (mid*mid <= a) {
-            ans = mid;
-            L = mid+1;
-        }
-        else R = mid-1;
+    BigInt x0 = a, x1 = (a+1)/2;
+    while (x1 < x0) {
+        x0 = x1;
+        x1 = (x1+a/x1)/2;
     }
-    Set(ans);
-    return ans;
+    return x0;
 }
+
 
 BigInt pow(BigInt a, BigInt b) {
     if (b == Integer(0)) return Integer(1);
@@ -313,9 +358,11 @@ BigInt pow(BigInt a, BigInt b) {
     return tmp * tmp * a;
 }
 
+
 BigInt pow(BigInt a, int b) {
     return pow(a,(Integer(b)));
 }
+
 
 int log(int n, BigInt a) { // log_n(a)
     Set(a);
@@ -326,6 +373,7 @@ int log(int n, BigInt a) { // log_n(a)
     }
     return ans;
 }
+
 
 int main()
 {
